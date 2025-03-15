@@ -1,0 +1,4 @@
+[Unit]
+Description=Tryton PostgreSQL volume
+
+[Volume]

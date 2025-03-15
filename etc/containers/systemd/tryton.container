@@ -1,0 +1,20 @@
+[Unit]
+Description=Tryton ERP container
+
+[Container]
+Pod=tryton.pod
+ContainerName = tryton
+Image = docker.io/tryton/tryton:7.4
+Volume = tryton.volume:/var/lib/trytond/db
+Network = tryton.network
+PublishPort = 8080:8000
+Environment = DB_HOSTNAME=tryton-postgres
+Environment = DB_NAME=tryton
+Secret = tryton-postgres-password,type=env,target=DB_PASSWORD
+
+[Service]
+Restart = always
+TimeoutStartSec = 30
+
+[Install]
+WantedBy = multi-user.target default.target
