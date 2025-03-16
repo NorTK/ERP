@@ -1,0 +1,21 @@
+[Unit]
+Description=Odoo ERP container
+After=network-online.target local-fs.target user@%U.service
+Wants=network-online.target
+
+[Container]
+EnvironmentFile=/etc/odoo/container.env
+Pod=odoo.pod
+ContainerName = odoo
+Image = docker.io/odoo/odoo:${ODOO_VERSION}
+Volume = odoo.volume:/var/lib/odoo
+Network = odoo.network
+PublishPort = 8080:8000
+Secret = odoo-postgres-password,type=env,target=POSTGRES_PASSWORD
+
+[Service]
+Restart = always
+TimeoutStartSec = 30
+
+[Install]
+WantedBy = multi-user.target default.target

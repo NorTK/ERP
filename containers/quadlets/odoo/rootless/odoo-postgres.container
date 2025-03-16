@@ -1,0 +1,19 @@
+[Unit]
+Description=Odoo ERP PostgreSQL container
+
+[Container]
+EnvironmentFile=/etc/odoo/container.env
+Pod=odoo.pod
+ContainerName = odoo-postgres
+Image = ghcr.io/enterprisedb/postgresql:${POSTGRES_VERSION}
+Volume = odoo-postgres.volume:/var/lib/postgresql/data/pgdata
+Network = odoo.network
+Secret = odoo-postgres-password,type=env,target=POSTGRES_PASSWORD
+
+[Service]
+Restart = always
+TimeoutStartSec = 30
+
+[Install]
+WantedBy = multi-user.target default.target odoo.service
+
