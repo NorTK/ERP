@@ -2,9 +2,14 @@
 Odoo Rootless Quadlet
 =====================
 
-
+------------
 Installation
 ------------ 
+
+------------------
+System Integration
+------------------
+
 
 - Copy the follwing files to the following directory: `/etc/containers/systemd/users/$(UID)` where `UID`
   is the user ID of the user that runs the quadlet.
@@ -14,9 +19,12 @@ Installation
 
   .. code-block:: bash
 
-      # cp odoo.container odoo.network odoo.pod odoo-postgres.container odoo-postgres.volume odoo.volume
-      # mkdir /etc/odoo
-      # cp ../etc/odoo/container.env /etc/odoo/
+      root@server ~# mkdir /etc/containers/systemd/users/$(id -u imcsk8)
+      root@server ~# cp odoo.container odoo.network odoo.pod odoo-postgres.container odoo-postgres.volume odoo.volume
+      root@server ~# mkdir /etc/odoo
+      root@server ~# cp ../etc/odoo/container.env /etc/odoo/
+
+
 
 - Create the secret:
 
@@ -44,4 +52,4 @@ Installation
 TODO
 ====
 
-Add instructions for using a norma Postgres server
+Add instructions for using a normal Postgres server
