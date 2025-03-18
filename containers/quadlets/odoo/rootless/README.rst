@@ -24,7 +24,8 @@ System Integration
       root@server ~# mkdir /etc/odoo
       root@server ~# cp ../etc/odoo/container.env /etc/odoo/
 
-
+  For testing purpouses the `~/.config/containers/systemd` directory can be used but it is not recommended for
+  production because the visibility of this user directories is not evident.
 
 - Create the secret:
 
