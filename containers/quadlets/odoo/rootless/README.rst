@@ -20,7 +20,8 @@ System Integration
   .. code-block:: bash
 
       root@server ~# mkdir /etc/containers/systemd/users/$(id -u imcsk8)
-      root@server ~# cp odoo.container odoo.network odoo.pod odoo-postgres.container odoo-postgres.volume odoo.volume
+      root@server ~# cp odoo.container odoo.network odoo.pod odoo-postgres.container \
+                     odoo-postgres.volume odoo.volume /etc/containers/systemd/users/$(UID)
       root@server ~# mkdir /etc/odoo
       root@server ~# cp ../etc/odoo/container.env /etc/odoo/
 
