@@ -46,7 +46,7 @@ System Integration
 
   .. code-block:: bash
 
-      odoo@server ~$ printf 'S0m3 fuck1n6 P4s5w07d.' | podman secret create tryton-postgres-password -
+      odoo@server ~$ printf 'S0m3 fuck1n6 P4s5w07d.' | podman secret create odoo-postgres-password -
 
 - Load and enable the systemd quadlets
 
@@ -63,6 +63,22 @@ System Integration
       odoo@server ~$ systemctl --user start odoo
 
   This will start the odoo service as well as the postgresql service.
+
+
+---------------
+Troubleshooting
+---------------
+
+- To debug the quadlet add the `GlobalArgs=--log-level=debug` to the `[Container]` section in the
+  `odoo.container` file.
+
+
+  .. code-block:: bash
+
+   ...
+   [Container]
+   GlobalArgs=--log-level=debug
+   ...
 
 ====
 TODO
