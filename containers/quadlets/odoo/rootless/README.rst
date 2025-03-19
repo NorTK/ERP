@@ -19,14 +19,28 @@ System Integration
 
   .. code-block:: bash
 
-      root@server ~# mkdir /etc/containers/systemd/users/$(id -u imcsk8)
+      root@server ~# ODOO_USER_ID=$(id -u imcsk8)
+      root@server ~# mkdir /etc/containers/systemd/users/$(ODOO_USER_ID)
       root@server ~# cp odoo.container odoo.network odoo.pod odoo-postgres.container \
-                     odoo-postgres.volume odoo.volume /etc/containers/systemd/users/$(UID)
+                     odoo-postgres.volume odoo.volume /etc/containers/systemd/users/$(ODOO_USER_ID)
       root@server ~# mkdir /etc/odoo
       root@server ~# cp ../etc/odoo/container.env /etc/odoo/
 
   For testing purpouses the `~/.config/containers/systemd` directory can be used but it is not recommended for
-  production because the visibility of this user directories is not evident.
+  production because the visibility of this user directories is not evident:
+
+  .. code-block:: bash
+
+      root@server ~# mkdir  ~/.config/containers/systemd
+      root@server ~# cp odoo.container odoo.network odoo.pod odoo-postgres.container \
+                     odoo-postgres.volume odoo.volume  ~/.config/containers/systemd/
+      root@server ~# mkdir ~/.config/odoo
+      root@server ~# cp ../etc/odoo/container.env .config/containers/systemd/
+      root@server ~# sed -i 's/EnvironmentFile=\/etc\/odoo\/container.env/EnvironmentFile=container.env/' \
+                     ~/.config/containers/systemd/odoo.container
+      root@server ~# sed -i 's/EnvironmentFile=\/etc\/odoo\/container.env/EnvironmentFile=container.env/' \
+                     ~/.config/containers/systemd/odoo-postgres.container
+
 
 - Create the secret:
 
