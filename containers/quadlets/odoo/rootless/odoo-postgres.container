@@ -1,7 +1,7 @@
 [Unit]
 Description=Odoo ERP PostgreSQL container
-After=network-online.target local-fs.target user@%U.service odoo-network.service odoo-postgres-volume.service
-Wants=network-online.target odoo-network.service  odoo-postgres-volume.service
+After=network-online.target local-fs.target user@%U.service odoo-pod.service odoo-network.service odoo-postgres-volume.service
+Wants=network-online.target odoo-pod.service odoo-network.service odoo-postgres-volume.service
 
 [Container]
 EnvironmentFile=/etc/odoo/container.env
@@ -13,6 +13,7 @@ Network = odoo.network
 Secret = odoo-postgres-password,type=env,target=POSTGRES_PASSWORD
 
 [Service]
+EnvironmentFile=/etc/odoo/container.env
 Restart = always
 TimeoutStartSec = 30
 
