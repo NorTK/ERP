@@ -11,7 +11,7 @@ ContainerName = odoo
 Image = ${ODOO_IMAGE}:${ODOO_VERSION}
 Volume = odoo.volume:/var/lib/odoo
 Network = odoo.network
-PublishPort = 8080:8000
+PublishPort = 8080:8069
 Secret = odoo-postgres-password,type=env,target=POSTGRES_PASSWORD
 
 [Service]
