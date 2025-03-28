@@ -1,0 +1,4 @@
+[Unit]
+Description=Odoo volume
+
+[Volume]
