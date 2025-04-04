@@ -5,15 +5,21 @@ Wants=network-online.target odoo-pod.service odoo-network.service odoo-postgres-
 
 [Container]
 EnvironmentFile=/etc/odoo/container.env
+# If you wish to use the users home directory comment the lie above and 
+# uncomment the line below
+#EnvironmentFile=/home/%u/.config/containers/systemd/container.env
 Pod=odoo.pod
 ContainerName = odoo-postgres
 Image = ${POSTGRES_IMAGE}:${POSTGRES_VERSION}
 Volume = odoo-postgres.volume:/var/lib/postgresql/data/pgdata
 Network = odoo.network
-Secret = odoo-postgres-password,type=env,target=POSTGRES_PASSWORD
+Secret = odoo-postgres-password,target=/home/%u/.pgpass
 
 [Service]
 EnvironmentFile=/etc/odoo/container.env
+# If you wish to use the users home directory comment the lie above and 
+# uncomment the line below
+#EnvironmentFile=/home/%u/.config/containers/systemd/container.env
 Restart = always
 TimeoutStartSec = 30
 
