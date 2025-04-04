@@ -20,9 +20,9 @@ System Integration
   .. code-block:: bash
 
       root@server ~# ODOO_USER_ID=$(id -u imcsk8)
-      root@server ~# mkdir /etc/containers/systemd/users/$(ODOO_USER_ID)
+      root@server ~# mkdir -p /etc/containers/systemd/users/${ODOO_USER_ID}
       root@server ~# cp odoo.container odoo.network odoo.pod odoo-postgres.container \
-                     odoo-postgres.volume odoo.volume /etc/containers/systemd/users/$(ODOO_USER_ID)
+                     odoo-postgres.volume odoo.volume /etc/containers/systemd/users/${ODOO_USER_ID}
       root@server ~# mkdir /etc/odoo
       root@server ~# cp ../etc/odoo/container.env /etc/odoo/
 
@@ -46,12 +46,16 @@ System Integration
 
   .. code-block:: bash
 
-      odoo@server ~$ printf 'S0m3 fuck1n6 P4s5w07d.' | podman secret create odoo-postgres-password -
+      # system wide
+      root@server ~# printf 'localhost:5432:*:*:S0m3 fuck1n6 P4s5w07d' | sudo -i -u odoo podman secret create odoo-postgres-password -
+      # For user
+      odoo@server ~$ printf 'localhost:5432:*:*:S0m3 fuck1n6 P4s5w07d' | podman secret create odoo-postgres-password -
 
 - Load and enable the systemd quadlets
 
   .. code-block:: bash
 
+      # Login as the odoo user
       odoo@server ~$ systemctl --user daemon-reload
       odoo@server ~$ systemctl --user enable odoo
 
