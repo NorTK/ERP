@@ -24,6 +24,9 @@ EnvironmentFile=/etc/odoo/container.env
 #EnvironmentFile=/home/%u/.config/containers/systemd/container.env
 Restart = always
 TimeoutStartSec = 30
+# Comment User and Group for running the service in a user environment
+User=odoo
+Group=odoo
 
 [Install]
 WantedBy = multi-user.target default.target odoo.service
