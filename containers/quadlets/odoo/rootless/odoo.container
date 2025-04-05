@@ -2,6 +2,7 @@
 Description=Odoo ERP container
 After=network-online.target local-fs.target user@%U.service odoo-pod.service odoo-volume.service odoo-postgres.service
 Wants=network-online.target odoo-pod.service odoo-volume.service odoo-postgres.service
+Requires=odoo-pod.service odoo-network.service odoo-volume.service odoo-postgres.service
 
 [Container]
 EnvironmentFile=/etc/odoo/container.env
