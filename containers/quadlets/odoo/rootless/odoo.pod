@@ -1,2 +1,7 @@
+# Esto necesita un parche de quadlets para jalar
+User=odoo
+Group=odoo
+RuntimeDirectory=odoo
+
 [Pod]
 PodName = odoo
