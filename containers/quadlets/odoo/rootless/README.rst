@@ -2,27 +2,40 @@
 Odoo Rootless Quadlet
 =====================
 
-------------
+
 Installation
------------- 
+------------
 
-------------------
 System Integration
-------------------
+~~~~~~~~~~~~~~~~~~
 
 
-- Copy the follwing files to the following directory: `/etc/containers/systemd/users/$(UID)` where `UID`
-  is the user ID of the user that runs the quadlet.
+Create the `odoo` user
+----------------------
+
+Create the user for running the **odoo** *quadlets*
+
+
+  .. code-block:: bash
+
+      root@server ~# useradd -U -m -c 'Containerized odoo service' -d /var/lib/odoo -s /bin/bash odoo
+
+ODOO_UID=$(id -u odoo)
+tal vez agregar lingering loginctl enable-linger ${ODOO_UID}
+
+Install `systemd quadlet` files
+-------------------------------
+
+- Copy the follwing files to the following directory: `/etc/containers/systemd/`.
   The configuration files should be in the `/etc/odoo/` directory. A the time of this writing the only
   file we're using is the `container.env` file.
 
 
   .. code-block:: bash
 
-      root@server ~# ODOO_USER_ID=$(id -u imcsk8)
-      root@server ~# mkdir /etc/containers/systemd/users/$(ODOO_USER_ID)
+      root@server ~# mkdir -p /etc/containers/systemd/
       root@server ~# cp odoo.container odoo.network odoo.pod odoo-postgres.container \
-                     odoo-postgres.volume odoo.volume /etc/containers/systemd/users/$(ODOO_USER_ID)
+                     odoo-postgres.volume odoo.volume /etc/containers/systemd/users/
       root@server ~# mkdir /etc/odoo
       root@server ~# cp ../etc/odoo/container.env /etc/odoo/
 
@@ -44,11 +57,28 @@ System Integration
 
 - Create the secret:
 
+  To avoid having the  database password in enviroment variables, the secret is available
+  inside the containers in the `~/.pgpass` file
+
   .. code-block:: bash
 
-      odoo@server ~$ printf 'S0m3 fuck1n6 P4s5w07d.' | podman secret create odoo-postgres-password -
+      # system wide
+      root@server ~# printf 'localhost:5432:*:*:S0m3 fuck1n6 P4s5w07d' | sudo -i -u odoo podman secret create odoo-postgres-password -
+      # For user
+      odoo@server ~$ printf 'localhost:5432:*:*:S0m3 fuck1n6 P4s5w07d' | podman secret create odoo-postgres-password -
 
 - Load and enable the systemd quadlets
+
+  To use **odoo** as system service reload the unit files and start the services.
+
+
+  .. code-block:: bash
+
+      odoo@server ~$ systemctl daemon-reload
+      odoo@server ~$ systemctl enable odoo
+
+  To use **odoo** as user service login as the `odoo` user, reload the unit files and
+  start the services.
 
   .. code-block:: bash
 
@@ -65,7 +95,6 @@ System Integration
   This will start the odoo service as well as the postgresql service.
 
 
----------------
 Troubleshooting
 ---------------
 
@@ -80,8 +109,8 @@ Troubleshooting
    GlobalArgs=--log-level=debug
    ...
 
-====
+
 TODO
-====
+----
 
 Add instructions for using a normal Postgres server

@@ -2,22 +2,32 @@
 Description=Odoo ERP container
 After=network-online.target local-fs.target user@%U.service odoo-pod.service odoo-volume.service odoo-postgres.service
 Wants=network-online.target odoo-pod.service odoo-volume.service odoo-postgres.service
+Requires=odoo-pod.service odoo-network.service odoo-volume.service odoo-postgres.service
 
 [Container]
 EnvironmentFile=/etc/odoo/container.env
+# If you wish to use the users home directory comment the lie above and
+# uncomment the line below
+#EnvironmentFile=/home/%u/.config/containers/systemd/container.env
 Pod=odoo.pod
 ContainerName = odoo
 # Control image to load from the configuration file
 Image = ${ODOO_IMAGE}:${ODOO_VERSION}
 Volume = odoo.volume:/var/lib/odoo
 Network = odoo.network
-PublishPort = 8080:8069
-Secret = odoo-postgres-password,type=env,target=POSTGRES_PASSWORD
+PublishPort = ${HOST_PORT}:${ODOO_CONTAINER_PORT}
+Secret = odoo-postgres-password,target=/home/%u/.pgpass
 
 [Service]
 EnvironmentFile=/etc/odoo/container.env
+# If you wish to use the users home directory comment the lie above and
+# uncomment the line below
+#EnvironmentFile=/home/%u/.config/containers/systemd/container.env
 Restart = always
 TimeoutStartSec = 30
+# Comment User and Group for running the service in a user environment
+User=odoo
+Group=odoo
 
 [Install]
 WantedBy = multi-user.target default.target
